@@ -1,0 +1,109 @@
+<style>
+	.dashboard {
+		background-image: url('https://res.cloudinary.com/jhcc/image/upload/v1485810379/main/q8td5rfoozxwoekrcfqv.png');
+		background-repeat: repeat;
+	}
+
+	.space {
+		margin: 15px;
+	}
+
+	.space md-content {
+		height: 500px;
+		overflow: auto;
+	}
+	.table-bordered td{
+		border: 1px dotted #CCC;
+		background: #EEE;
+	}
+</style>
+
+<md-content class="dashboard" flex ng-cloak>
+	<section flex>
+		<md-toolbar class="md-hue-2">
+			<div class="md-toolbar-tools">
+				<a href="#/page/fuel"> <i class="fa fa-home"></i> &nbsp; </a>
+				<h2>Fuel Export for tank: {{tank.title}}</h2>
+				<span flex></span>
+				<md-input-container flex>
+					<label>&nbsp;</label>
+					<input ng-model="searchText" placeholder="Quick Jump">
+				</md-input-container>
+				<md-menu>
+					<md-button aria-label="Open search interaction menu" class="md-icon-button" ng-click="$mdOpenMenu()">
+						<i class="fa fa-search"></i>
+					</md-button>
+					<md-menu-content width="4">
+						<md-menu-item>
+							<md-button ng-href="#/page/fuel_user?uid={{searchText}}">
+								<md-icon><i class="fa fa-user"></i></md-icon>
+								Users
+							</md-button>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button ng-href="#/page/fuel_vehicle?vid={{searchText}}">
+								<md-icon><i class="fa fa-truck"></i></md-icon>
+								Vehicles
+							</md-button>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button ng-href="#/page/fuel_tank?tid={{searchText}}">
+								<md-icon><i class="fa fa-hourglass"></i></md-icon>
+								Tanks
+							</md-button>
+						</md-menu-item>
+						<md-divider></md-divider>
+						<md-menu-item>
+							<md-button ng-href="#/page/fuel">
+								<md-icon><i class="fa fa-home"></i></md-icon>
+								Home
+							</md-button>
+						</md-menu-item>
+					</md-menu-content>
+				</md-menu>
+			</div>
+		</md-toolbar>
+
+		<md-toolbar class="md-hue-3">
+			<div class="md-toolbar-tools">
+				<h2>
+						<input type="date" ng-model="qry.start" title="Start">
+						<input type="date" ng-model="qry.end" title="end">
+				</h2>
+				<md-button class="md-raised" ng-click="js.fuel.load()">Generate Report</md-button>
+				<span flex></span>
+				<md-button class="md-raised" ng-show="csv" href="{{csv}}" download="fuelExport.csv">Export</md-button>
+			</div>
+		</md-toolbar>
+		<md-content layout="row" layout-wrap flex>
+			<table class="table table-bordered">
+				<tr>
+					<th ng-repeat="col in columns">{{col}}</th>
+					<!--<th>Ticket Number</th>-->
+					<!--<th>Employee</th>-->
+					<!--<th>Employee Id</th>-->
+					<!--<th>Tank</th>-->
+					<!--<th>Tank Start</th>-->
+					<!--<th>Tank End</th>-->
+					<!--<th>Meter Gal Diff</th>-->
+					<!--<th>Equipment</th>-->
+					<!--<th>Odometer</th>-->
+					<!--<th>Gallons</th>-->
+				</tr>
+				<tr ng-repeat="entry in fuel">
+					<td ng-repeat="col in columns">{{entry[col]}}</td>
+					<!--<td>{{entry.ticketNumber}}</td>-->
+					<!--<td>{{entry.employee}}</td>-->
+					<!--<td>{{entry.employeeId}}</td>-->
+					<!--<td>{{entry.fuelTank.equipmentNumber}}</td>-->
+					<!--<td>{{entry.fuelTank.startMeter}}</td>-->
+					<!--<td>{{entry.fuelTank.endMeter}}</td>-->
+					<!--<td>{{entry.audit.galDiff}}</td>-->
+					<!--<td>{{entry.equipmentNumber}}</td>-->
+					<!--<td>{{entry.od_hr}}</td>-->
+					<!--<td>{{entry.fuelTank.gallons}}</td>-->
+				</tr>
+			</table>
+		</md-content>
+	</section>
+</md-content>

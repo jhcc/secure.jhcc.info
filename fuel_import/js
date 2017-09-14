@@ -1,0 +1,112 @@
+js = {
+	init: function(){
+		$scope.qry = {
+			start:	moment().add(-1, 'months').toDate(),
+			end:	moment().toDate()
+		}
+		if($routeParams.id){
+			$http.get('/cloud/classes/ud_fuel_tanks?objectId='+$routeParams.id).then(function(result){
+				js.tank.focus(result.data)
+			})
+		}else if($routeParams.tid){
+			$http.post('/cloud/classes/ud_fuel_tanks', {
+				find: {"equipmentNumber": $routeParams.tid}
+			}).then(function(result){
+				if(result.data.length)
+					js.tank.focus(result.data[0])
+			})
+		}
+	},
+	tank:{
+		focus: function(tank){
+			$scope.tank = tank;
+			$http.post('/cloud/classes/ud_fuel_purchase?limit=3', {
+				find: {"tankNumber":tank.equipmentNumber},
+				sort: {purchaseDate: -1}
+			}).then(function(result){
+				result.data.forEach(function(m){
+					if(!$scope.price && m.price)
+						$scope.price = m.price;
+				})
+				$scope.manifest = result.data;
+				$scope.js.fuel.load();
+			})
+		}
+	},
+	fuel: {
+		load: function(){
+			$scope.csv = null;
+			var qry = {
+				find: {"fuelTank.equipmentNumber": $scope.tank.equipmentNumber,
+					savedOn: {
+						$gte: {__type: 'Date', iso: moment($scope.qry.start)},
+						$lt: {__type: 'Date', iso: moment($scope.qry.end)}
+					}
+				},
+				fields: {signature: 0},
+				sort: {}
+			}
+			qry.sort['savedOn'] = -1;
+
+			$http.post('/cloud/classes/ud_fuel?limit=5000', qry).then(function(result){
+				$scope.orig = result.data;
+				var material = {
+					diesel: 	'103000',
+					dyedDiesel: '102000',
+					unleaded:	'101000'
+				}
+				// $scope.columns = ['ActualDate','Equipment','CostCode','EMCOstType','Material','Units','UnitPrice','MeterReadDate','CurrentOdometer'];
+				$scope.columns = ['ActualDate','Equipment','Material','Units','UnitPrice','MeterReadDate','CurrentOdometer'];
+				function formatNum(n){
+					while(n.length < 4)
+						n = '0'+n
+					return n
+				}
+				$scope.total = 0;
+				$scope.fuel = result.data.map(function(entry){
+					$scope.total += Number(entry.fuelTank.gallons);
+					return {
+						ActualDate: 		moment().format('YYMMDD'),
+						Equipment:			formatNum(entry.equipmentNumber),
+						CostCode:			'CostCode',
+						EMCOstType: 		'EMCostType',
+						Material:			material[$scope.tank.fuelType],
+						Units:				entry.fuelTank.gallons,
+						UnitPrice:			$scope.price,
+						MeterReadDate:		moment(entry.savedOn).format('YYMMDD'),
+						CurrentOdometer:	entry.od_hr
+					}
+				})
+				$scope.fuel.push({
+					ActualDate: 		moment().format('YYMMDD'),
+					Equipment:			formatNum($scope.tank.equipmentNumber),
+					CostCode:			'CostCode',
+					EMCOstType: 		'EMCostType',
+					Material:			material[$scope.tank.fuelType],
+					Units:				-Math.round($scope.total),
+					UnitPrice:			$scope.price,
+					MeterReadDate:		moment().format('YYMMDD'),
+					CurrentOdometer:	result.data[result.data.length-1].fuelTank.endMeter
+				})
+				$scope.js.fuel.export($scope.fuel, $scope.columns);
+			})
+		},
+		export: function(fuel, columns){
+			var csvContent = "data:text/csv;charset=utf-8,";
+			var fuel = angular.copy(fuel).map(function(entry){
+				return columns.map(function(c){return entry[c]}).join(',')
+			})
+			console.log(fuel);
+			csvContent += columns.join(',')  + '%0A'
+			csvContent += fuel.join('%0A')
+
+			// const BOM = "\uFEFF"
+			// const output = BOM + csvContent
+			// const file = new Blob([output], { type: 'text/csv;charset=utf-8' })
+			// const url = $sce.trustAsResourceUrl(URL.createObjectURL(file))
+
+			const url = $sce.trustAsResourceUrl(csvContent)
+			$scope.csv = url
+		}
+	}
+}
