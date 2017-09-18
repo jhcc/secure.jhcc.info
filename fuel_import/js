@@ -56,13 +56,14 @@ js = {
 					unleaded:	'101000'
 				}
 				// $scope.columns = ['ActualDate','Equipment','CostCode','EMCOstType','Material','Units','UnitPrice','MeterReadDate','CurrentOdometer'];
-				$scope.columns = ['ActualDate','Equipment','Material','Units','UnitPrice','MeterReadDate','CurrentOdometer'];
+				$scope.columns = ['ActualDate','Equipment','Material','Units','UnitPrice','MeterReadDate','CurrentOdometer','SourceTank'];
 				function formatNum(n){
 					while(n.length < 4)
 						n = '0'+n
 					return n
 				}
 				$scope.total = 0;
+				//credit fuel for each entry
 				$scope.fuel = result.data.map(function(entry){
 					$scope.total += Number(entry.fuelTank.gallons);
 					return {
@@ -74,9 +75,11 @@ js = {
 						Units:				entry.fuelTank.gallons,
 						UnitPrice:			$scope.price,
 						MeterReadDate:		moment(entry.savedOn).format('YYMMDD'),
-						CurrentOdometer:	entry.od_hr
+						CurrentOdometer:	entry.od_hr,
+						SourceTank: 		formatNum($scope.tank.equipmentNumber)
 					}
 				})
+				//debit all fuel from the tank
 				$scope.fuel.push({
 					ActualDate: 		moment().format('YYMMDD'),
 					Equipment:			formatNum($scope.tank.equipmentNumber),
@@ -86,7 +89,8 @@ js = {
 					Units:				-Math.round($scope.total),
 					UnitPrice:			$scope.price,
 					MeterReadDate:		moment().format('YYMMDD'),
-					CurrentOdometer:	result.data[result.data.length-1].fuelTank.endMeter
+					CurrentOdometer:	result.data[result.data.length-1].fuelTank.endMeter,
+					SourceTank: 		formatNum($scope.tank.equipmentNumber)
 				})
 				$scope.js.fuel.export($scope.fuel, $scope.columns);
 			})
@@ -96,9 +100,10 @@ js = {
 			var fuel = angular.copy(fuel).map(function(entry){
 				return columns.map(function(c){return entry[c]}).join(',')
 			})
-			console.log(fuel);
-			csvContent += columns.join(',')  + '%0A'
-			csvContent += fuel.join('%0A')
+
+			//This is what you would edit for joins and delimeters.
+			csvContent += columns.join(',')  + '\\n';	// '%0A'
+			csvContent += fuel.join('\\n'); 			// ('%0A')
 
 			// const BOM = "\uFEFF"
 			// const output = BOM + csvContent
