@@ -102,8 +102,8 @@ js = {
 			})
 
 			//This is what you would edit for joins and delimeters.
-			csvContent += columns.join(',')  + '\\n';	// '%0A'
-			csvContent += fuel.join('\\n'); 			// ('%0A')
+			csvContent += columns.join(',')  + '%0D%0A';	// '%0D%0A'
+			csvContent += fuel.join('%0D%0A'); 			// ('%0D%0A')
 
 			// const BOM = "\uFEFF"
 			// const output = BOM + csvContent
