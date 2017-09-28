@@ -52,7 +52,7 @@
 					</div>
 				</md-toolbar>
 				<md-content layout="column">
-					<md-button class="md-block list-group-item" flex ng-href="http://hrss.jhcc.info" target="_blank" md-whiteframe="2">HRSS</md-button>
+					<md-button class="md-block list-group-item" flex ng-href="https://jameshamilton-keystyle.viewpointforcloud.com/" target="_blank" md-whiteframe="2">Keystyles</md-button>
 					<md-button class="md-block list-group-item" flex ng-href="offline/?formId=mGHOtDWA7U" target="_blank" md-whiteframe="2">Safety Survey</md-button>
 				</md-content>
 			</div>
