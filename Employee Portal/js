@@ -1,0 +1,12 @@
+js = {
+	init: function(){
+
+	},
+	roles: function(){
+		if($scope.user && $scope.user.roles)
+			return Object.keys($scope.user.roles).filter(function(r){
+				var donotuse = ['$id', '$priority', '$$conf']
+				return donotuse.indexOf(r) == -1
+			})
+	}
+}

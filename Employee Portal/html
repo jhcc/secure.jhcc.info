@@ -1,0 +1,72 @@
+<style>
+	.parallax{
+		background-image: url('https://res.cloudinary.com/jhcc/image/upload/v1485810379/main/q8td5rfoozxwoekrcfqv.png');
+		background-repeat: repeat;
+	}
+</style>
+<div class="parallax" flex ng-cloak>
+	<!--<section class="splash" layout-padding flex>-->
+	<!--	<h1>James Hamilton Construction Co.</h1>-->
+	<!--	<img cl-src="https://res.cloudinary.com/jhcc/image/upload/v1483984113/xpaf8inhh3pwtcphgepg.jpg" transform_w="1500" transform_h="750">-->
+	<!--</section>-->
+	<!--<section class="gallery" layout-padding layout="row" layout-align="center" layout-wrap flex>-->
+	<!--	<h1>Tools</h1>-->
+	<!--	<div class="card" flex-xs flex-sm="50" flex-gt-sm="25" ng-repeat="i in promo">-->
+	<!--		<md-card>-->
+	<!--			<img cl-src="{{i.img}}" class="md-card-image" transform_w="400" transform_h="200">-->
+	<!--			<md-card-title>-->
+	<!--				<md-card-title-text>-->
+	<!--					<span class="md-headline">{{i.title}}</span>-->
+	<!--				</md-card-title-text>-->
+	<!--			</md-card-title>-->
+	<!--			<md-card-content style="height: 300px;">-->
+	<!--				<p>{{i.description}}</p>-->
+	<!--			</md-card-content>-->
+	<!--			<md-card-actions layout="row" layout-align="end center">-->
+	<!--				<md-button ng-href="{{i.link}}">Learn More</md-button>-->
+	<!--			</md-card-actions>-->
+	<!--		</md-card>-->
+	<!--	</div>-->
+	<!--</section>-->
+	<section layout-padding flex>
+		<h1 style="color:#FFF;">Employee Portal</h1>
+		<div layout="row" layout-wrap layout-margin>
+			<div flex="100" flex-gt-md="25">
+				<md-toolbar>
+					<div class="md-toolbar-tools">
+						<h2>Tools</h2>
+					</div>
+				</md-toolbar>
+				<md-content layout="column">
+					<md-button class="md-block list-group-item" flex ng-href="http://gmail.com" target="_blank" md-whiteframe="2">Email</md-button>
+					<md-button class="md-block list-group-item" flex ng-href="http://drive.google.com" target="_blank" md-whiteframe="2">Documents</md-button>
+					<md-button class="md-block list-group-item" flex ng-href="http://calendar.google.com" target="_blank" md-whiteframe="2">Calendar</md-button>
+					<md-button class="md-block list-group-item" flex ng-href="http://meet.google.com" target="_blank" md-whiteframe="2">Meetings</md-button>
+				</md-content>
+			</div>
+
+			<div flex="100" flex-gt-md="25">
+				<md-toolbar>
+					<div class="md-toolbar-tools">
+						<h2>Links</h2>
+					</div>
+				</md-toolbar>
+				<md-content layout="column">
+					<md-button class="md-block list-group-item" flex ng-href="http://hrss.jhcc.info" target="_blank" md-whiteframe="2">HRSS</md-button>
+					<md-button class="md-block list-group-item" flex ng-href="offline/?formId=mGHOtDWA7U" target="_blank" md-whiteframe="2">Safety Survey</md-button>
+				</md-content>
+			</div>
+
+			<div flex="100" flex-gt-md="25">
+				<md-toolbar>
+					<div class="md-toolbar-tools">
+						<h2>Roles</h2>
+					</div>
+				</md-toolbar>
+				<md-content layout="column">
+					<md-button class="md-block list-group-item" flex ng-repeat="role in js.roles()" ng-href="#/page/role_{{role}}" md-whiteframe="2">{{role}}</md-button>
+				</md-content>
+			</div>
+		</div>
+	</section>
+</div>
