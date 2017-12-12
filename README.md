@@ -4,4 +4,4 @@ This repository was created to preserve the code at secure.jhcc.info. That websi
 
 I created a new directory in this repo before changing any of the Atfiliate js/html at secure.jhcc.info. The directory was named based on the view.
 
-Basically, Atfiliate takes care of and hosts all the code on the page except for specific js/html. I belive we are using a free version of Atfiliate.
+Basically, Atfiliate hosts the page and takes care of all the code except for specific js/html. I belive we are using a free version of Atfiliate.
